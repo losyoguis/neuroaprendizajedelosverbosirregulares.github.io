@@ -421,6 +421,18 @@
     }
     .modal h2{margin:0 0 10px; color:var(--primary); font-weight:950;}
 
+    /* ✅✅✅ Modales arriba (Review + Red neuronal)
+       Se muestran en la parte superior de la pantalla (sin “bajar” por la barra fija). */
+    #overlay, #reviewOverlay, #instOverlay{
+      align-items:flex-start !important;
+      padding: 18px 18px 18px !important; /* arriba | laterales | abajo */
+    }
+    #overlay .modal, #reviewOverlay .modal, #instOverlay .modal{
+      margin-top: 0 !important;
+      max-height: calc(100vh - 36px) !important;
+    }
+
+
     /* ✅ Cuando un modal está abierto, bajamos la prioridad del HUD (barra de puntuación y botón flotante)
        para que NUNCA tape el contenido del modal (especialmente en Google Sites). */
     body.modal-open .stats,
