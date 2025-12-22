@@ -37,7 +37,7 @@
     }
 
     body.has-floating-stats{
-      padding-top: 170px;
+      padding-top: calc(var(--hudSafe, 160px) + 12px);
     }
 
     .app{
@@ -1174,7 +1174,120 @@
       height:240px;
     }
 
-</style>
+
+    /* ✅✅✅ RESPONSIVE MÓVIL (estilo "app") */
+    @media (max-width: 640px){
+      /* Contenedor principal */
+      .app{
+        padding: 14px;
+        border-radius: 18px;
+      }
+
+      /* Barra de puntos: compacta + desplazable horizontal */
+      .stats{
+        top: calc(env(safe-area-inset-top, 0px) + 8px) !important;
+        width: calc(100% - 18px) !important;
+        padding: 10px 10px;
+        gap: 8px;
+        border-radius: 16px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
+      }
+      .stats::-webkit-scrollbar{ display:none; }
+      .statBox{
+        min-width: 96px;
+        padding: 6px 8px;
+        scroll-snap-align: start;
+      }
+      .stat-label{ font-size:.72rem; }
+      .stat-value{ font-size:1.05rem; }
+
+      /* Menú de botones: una sola fila desplazable (tipo Duolingo) */
+      .roundbar{
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        justify-content: flex-start;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x proximity;
+        padding-bottom: 6px;
+        gap: 10px;
+      }
+      .roundbar::-webkit-scrollbar{ display:none; }
+      .roundbtn{
+        padding: 10px 12px;
+        border-radius: 13px;
+        font-size: .8rem;
+        white-space: nowrap;
+        scroll-snap-align: start;
+      }
+
+      /* Selección de grupo/día */
+      .top{
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .btn-mini{
+        width: 100%;
+      }
+
+      /* Texto principal */
+      .target{
+        font-size: 2.15rem;
+      }
+
+      /* Inputs: evitar zoom iOS + más cómodos */
+      input{
+        font-size: 16px;
+        padding: 14px;
+      }
+      .inputs{
+        grid-template-columns: 1fr;
+      }
+
+      /* Botones de audio: 2 por fila */
+      .audio{
+        flex-wrap: wrap;
+      }
+      .btn-audio{
+        flex: 1 1 calc(50% - 10px);
+        min-height: 48px;
+      }
+
+      /* Modales: más ancho útil */
+      .modal{
+        width: 96%;
+        padding: 16px;
+        border-radius: 16px;
+      }
+
+      /* Botón flotante: más pequeño */
+      .ebook-float{
+        right: 12px;
+        bottom: 12px;
+        padding: 10px 12px;
+        border-radius: 13px;
+        font-size: .78rem;
+      }
+    }
+
+    @media (max-width: 420px){
+      .target{ font-size: 1.95rem; }
+      .statBox{ min-width: 88px; }
+      .roundbtn{ font-size: .78rem; padding: 10px 11px; }
+    }
+
+    /* Mejoras táctiles */
+    @media (hover: none){
+      .roundbtn, .btn-main, .btn-audio, .btn-mini, .ebook-float{
+        -webkit-tap-highlight-color: transparent;
+      }
+    }
+
+  </style>
 </head>
 
 <body class="has-floating-stats">
