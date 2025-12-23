@@ -462,7 +462,7 @@
       margin:18px 0 10px; text-align:center; font-weight:950;
     }
     .grid{
-      display:grid; grid-template-columns:repeat(auto-fit, minmax(340px,1fr));
+      display:grid; grid-template-columns:repeat(auto-fit, minmax(min(340px, 100%), 1fr));
       gap:12px;
     }
     .card{
@@ -516,6 +516,18 @@
       padding:6px 10px; cursor:pointer; float:right;
       font-weight:900;
     }
+    /* ✅ Reading/Practice: botón 🔊 sin romper el flujo en móvil */
+    #readingArea .btn-listen, #practiceArea .btn-listen{
+      float:none;
+      position:absolute;
+      right:10px;
+      top:10px;
+    }
+    #readingArea td, #practiceArea td{
+      position:relative;
+      padding-right:54px;
+    }
+
     .btn-listen:hover{background:var(--secondary); color:#0b1220;}
     .legend{font-size:.8rem; color:var(--muted); margin-top:8px;}
 
@@ -714,7 +726,7 @@
     }
     .practice-grid{
       display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));
+      grid-template-columns:repeat(auto-fit, minmax(min(320px, 100%), 1fr));
       gap:12px;
     }
     .p-card{
@@ -1058,7 +1070,7 @@
     .spellWork b{ color:#fff; }
     .spellGrid{
       display:grid;
-      grid-template-columns: repeat(3, minmax(220px, 1fr));
+      grid-template-columns: repeat(3, minmax(min(220px, 100%), 1fr));
       gap:14px;
     }
     @media (max-width: 900px){
@@ -1343,6 +1355,15 @@
 
     /* ✅✅✅ RESPONSIVE MÓVIL (estilo "app") */
     @media (max-width: 640px){
+      /* ✅ Ajustes extra responsive (Reading/Practice) */
+      #readingArea table, #practiceArea table{ width:100%; }
+      #readingArea td, #practiceArea td{ word-break:break-word; }
+      #readingArea .btn-listen, #practiceArea .btn-listen{
+        width:38px; height:38px; font-size:18px;
+      }
+      #readingArea .en{ font-size:1.06rem; line-height:1.35; }
+      #readingArea .es{ font-size:.92rem; margin-top:6px; }
+
       /* Contenedor principal */
       .app{
         padding: 14px;
