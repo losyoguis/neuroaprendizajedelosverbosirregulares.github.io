@@ -8,6 +8,12 @@
     :root{
       --purple:#65116B;
       --orange:#F28B16;
+      --blue:#2563eb; /* azul para C2 */
+      --red:#ff3b30;  /* rojo para C3 */
+
+      --c1: var(--orange);
+      --c2: var(--blue);
+      --c3: var(--red);
 
       --primary: var(--purple);
       --secondary: var(--orange);
@@ -119,11 +125,19 @@
     /* ✅ ROUND BUTTONS */
     .roundbar{
       display:flex;
+      flex-direction:column;
       gap:10px;
       justify-content:center;
       align-items:center;
       margin:0 0 12px;
+    }
+    .roundrow{
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      align-items:center;
       flex-wrap:wrap;
+      width:100%;
     }
     .roundbtn{
       border:none;
@@ -139,11 +153,68 @@
       text-transform:uppercase;
     }
     .roundbtn:hover{transform:translateY(-1px); border-color:rgba(255,255,255,.25);}
+    /* ✅ Ayudas por botón (tooltip) */
+    .roundbtn[data-help]{ position:relative; }
+    .roundbtn[data-help]::after{
+      content: attr(data-help);
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      bottom: calc(100% + 10px);
+      background: rgba(15,23,42,.95);
+      color:#fff;
+      padding:8px 10px;
+      border-radius:10px;
+      font-size:12px;
+      font-weight:800;
+      text-transform:none;
+      letter-spacing:0;
+      line-height:1.2;
+      width:max-content;
+      max-width:260px;
+      box-shadow:0 12px 26px rgba(0,0,0,.35);
+      opacity:0;
+      pointer-events:none;
+      transition:.12s;
+      z-index: 99999999;
+      white-space: normal;
+    }
+    .roundbtn[data-help]::before{
+      content:"";
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      bottom: calc(100% + 4px);
+      border:6px solid transparent;
+      border-top-color: rgba(15,23,42,.95);
+      opacity:0;
+      pointer-events:none;
+      transition:.12s;
+      z-index: 99999999;
+    }
+    .roundbtn[data-help]:hover::after,
+    .roundbtn[data-help]:hover::before,
+    .roundbtn[data-help]:focus-visible::after,
+    .roundbtn[data-help]:focus-visible::before{
+      opacity:1;
+    }
     .roundbtn.active{
       background:var(--secondary);
       color:#0b1220;
       border-color:var(--secondary);
     }
+    .roundbtn.ebook{
+      background:var(--secondary);
+      color:#0b1220;
+      border-color:var(--secondary);
+    }
+    .roundbtn.ebook:hover{transform:translateY(-1px); filter:brightness(1.02);}
+    .roundbtn.web{
+      background:#0b1220;
+      color:#fff;
+      border:2px solid rgba(255,255,255,.12);
+    }
+    .roundbtn.web:hover{transform:translateY(-1px); border-color:rgba(255,255,255,.25);}
     .roundhint{
       font-weight:900;
       color:#cbd5e1;
@@ -331,6 +402,25 @@
     }
     input:focus{border-color:var(--secondary); outline:none; background:#f8fafc;}
 
+    
+    /* Fondo clarito por cajón C1/C2/C3 */
+    #c1{ background: rgba(255,149,0,.14); border-color: rgba(255,149,0,.40); }
+    #c2{ background: rgba(0,122,255,.14); border-color: rgba(0,122,255,.40); }
+    #c3{ background: rgba(255,59,48,.14); border-color: rgba(255,59,48,.40); }
+
+    /* Color de fuente (igual que conjugaciones) */
+    #c1{ color: rgb(255,149,0); }
+    #c2{ color: rgb(0,122,255); }
+    #c3{ color: rgb(255,59,48); }
+
+    #c1::placeholder{ color: rgba(255,149,0,.85); }
+    #c2::placeholder{ color: rgba(0,122,255,.85); }
+    #c3::placeholder{ color: rgba(255,59,48,.85); }
+
+    #c1:focus{ background: rgba(255,149,0,.20); border-color: rgba(255,149,0,.75); }
+    #c2:focus{ background: rgba(0,122,255,.20); border-color: rgba(0,122,255,.75); }
+    #c3:focus{ background: rgba(255,59,48,.20); border-color: rgba(255,59,48,.75); }
+
     .btn-main{
       background:var(--secondary); color:#0b1220;
       padding:16px; border-radius:16px;
@@ -349,9 +439,10 @@
       border:none; cursor:pointer; font-weight:950;
       color:#fff; transition:.15s;
     }
-    .btn-a{background:var(--primary);}
-    .btn-b{background:var(--secondary); color:#0b1220;}
-    .btn-audio:hover{transform:translateY(-1px); opacity:.95;}
+    .btn-a{background:var(--c1); color:#fff;}
+    .btn-b{background:var(--c2); color:#fff;}
+    .btn-c{background:var(--c3); color:#fff;}
+.btn-audio:hover{transform:translateY(-1px); opacity:.95;}
 
     .nav{
       display:flex; justify-content:center; align-items:center;
@@ -384,11 +475,42 @@
       padding:10px 6px; border-bottom:1px solid #e2e8f0;
       vertical-align:top;
     }
+    th{
+      text-align:left;
+      padding:8px 6px;
+      border-bottom:1px solid #cbd5e1;
+      font-size:.72rem;
+      color:#64748b;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+    }
+    td.pron-col{
+      width:74px;
+      font-weight:950;
+      color:#0f172a;
+    }
+    td.en-col .en{
+      display:block;
+      margin:0;
+      padding-right:46px; /* espacio para el botón 🔊 */
+      line-height:1.25;
+    }
+    td.tr-col{
+      color:var(--muted);
+      font-style:italic;
+      font-size:.88rem;
+    }
+
     .en{font-weight:950;}
     .es{
       display:block; font-size:.86rem; color:var(--muted);
       font-style:italic; margin-top:2px;
     }
+    /* ✅ Colores por forma verbal */
+    .v-c1{ color: var(--secondary); font-weight:950; } /* C1 Base (naranja) */
+    .v-c2{ color: var(--blue); font-weight:950; }      /* C2 Past (azul) */
+    .v-c3{ color: var(--error); font-weight:950; }     /* C3 Participle (rojo) */
+
     .btn-listen{
       background:#e2e8f0; border:none; border-radius:999px;
       padding:6px 10px; cursor:pointer; float:right;
@@ -414,8 +536,8 @@
       display:none;
       justify-content:center;
       align-items:flex-start;
-      /* Arriba: debajo de la barra fija, calculado en vivo */
-      padding: var(--hudSafe, 160px) 18px 18px;
+      padding: 18px;
+      padding-top: 24px;
       overflow:auto;
       z-index: 9999999 !important;
     }
@@ -425,23 +547,24 @@
       border-radius:18px;
       max-width:860px;
       width:92%;
-      max-height: calc(100vh - var(--hudSafe, 160px) - 28px);
+      max-height: 88vh;
       overflow:auto;
       border:2px solid var(--secondary);
       box-shadow:0 25px 50px rgba(0,0,0,.45);
     }
     .modal h2{margin:0 0 10px; color:var(--primary); font-weight:950;}
 
-    /* ✅✅✅ Modales arriba (Review + Red neuronal)
-       Se muestran en la parte superior de la pantalla (sin “bajar” por la barra fija). */
-    #overlay, #reviewOverlay, #instOverlay{
+    /* ✅ Modales arriba (visibles sin subir) */
+    #overlay, #reviewOverlay, #instOverlay, #ebookOverlay{
       align-items:flex-start !important;
-      padding: 18px 18px 18px !important; /* arriba | laterales | abajo */
+      padding: 18px !important;
+      padding-top: 24px !important;
     }
     #overlay .modal, #reviewOverlay .modal, #instOverlay .modal{
       margin-top: 0 !important;
-      max-height: calc(100vh - 36px) !important;
+      max-height: 88vh !important;
     }
+
 
 
     /* ✅ Cuando un modal está abierto, bajamos la prioridad del HUD (barra de puntuación y botón flotante)
@@ -465,9 +588,9 @@
       inset:0;
       z-index: 10000000 !important;
       display:none;
-      align-items:flex-start;
+      align-items:center;
       justify-content:center;
-      padding: var(--hudSafe, 160px) 18px 18px;
+      padding: 18px;
       overflow:auto;
     }
     .motivation-card{
@@ -481,6 +604,8 @@
       padding:18px 18px 16px;
       animation: pop .18s ease-out;
       position:relative;
+      max-height: 88vh;
+      overflow:auto;
     }
     @keyframes pop{
       from{transform:scale(.96); opacity:0;}
@@ -1032,6 +1157,24 @@
     }
     .spellValidate:hover{ filter:brightness(1.03); transform: translateY(-1px); }
 
+
+    /* ✅ Colores neuro para C1/C2/C3 (Spelling Bee) */
+    .spellGrid .spellCard:nth-child(1) .spellLabel{ color: var(--c1); }
+    .spellGrid .spellCard:nth-child(2) .spellLabel{ color: var(--c2); }
+    .spellGrid .spellCard:nth-child(3) .spellLabel{ color: var(--c3); }
+
+    .spellGrid .spellCard:nth-child(1){ border-color: rgba(242,139,22,.32); }
+    .spellGrid .spellCard:nth-child(2){ border-color: rgba(37,99,235,.30); }
+    .spellGrid .spellCard:nth-child(3){ border-color: rgba(255,59,48,.30); }
+
+    .spellGrid .spellCard:nth-child(1) .spellArrow{ background: rgba(242,139,22,.26); border:1px solid rgba(242,139,22,.42); }
+    .spellGrid .spellCard:nth-child(2) .spellArrow{ background: rgba(37,99,235,.22); border:1px solid rgba(37,99,235,.40); }
+    .spellGrid .spellCard:nth-child(3) .spellArrow{ background: rgba(255,59,48,.18); border:1px solid rgba(255,59,48,.38); }
+
+    .spellGrid .spellCard:nth-child(1) .spellVal{ border-color: rgba(242,139,22,.30); color: var(--c1); }
+    .spellGrid .spellCard:nth-child(2) .spellVal{ border-color: rgba(37,99,235,.28); color: var(--c2); }
+    .spellGrid .spellCard:nth-child(3) .spellVal{ border-color: rgba(255,59,48,.26); color: var(--c3); }
+
   
     /* =========================
        Tooltips (HUD)
@@ -1228,18 +1371,13 @@
       .stat-label{ font-size:.72rem; }
       .stat-value{ font-size:1.05rem; }
 
-      /* Menú de botones: una sola fila desplazable (tipo Duolingo) */
+      /* Menú de botones: 3 filas centradas */
       .roundbar{
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        overflow-y: hidden;
-        justify-content: flex-start;
-        -webkit-overflow-scrolling: touch;
-        scroll-snap-type: x proximity;
-        padding-bottom: 6px;
+        overflow: visible;
+        justify-content: center;
+        padding-bottom: 0;
         gap: 10px;
       }
-      .roundbar::-webkit-scrollbar{ display:none; }
       .roundbtn{
         padding: 10px 12px;
         border-radius: 13px;
@@ -1369,20 +1507,32 @@
 
     <div class="roundbar">
 
-      <!-- ✅ ORDEN PEDIDO: 1) Instrucciones 2) E-book 3) Round 1 4) Round 2 5) Voz Activa 6) Voz Pasiva -->
-      <button class="roundbtn" type="button" onclick="abrirInstrucciones()">INSTRUCCIONES 📌</button>
+      <!-- ✅ FILA 1: INSTRUCCIONES + E-BOOK + WEB -->
+      <div class="roundrow">
+        <button class="roundbtn" type="button" onclick="abrirInstrucciones()"
+          data-help="Guía rápida: cómo usar la app paso a paso."
+          title="Guía rápida: cómo usar la app paso a paso.">INSTRUCCIONES 📌</button>
 
-      <!-- ✅ (QUITADO) E-BOOK (Link) -->
+        <button class="roundbtn ebook" type="button" onclick="abrirEbook()"
+          data-help="Abre el e-book (Canva) dentro de la app."
+          title="Abre el e-book (Canva) dentro de la app.">E-BOOK 📚</button>
+</div>
 
-      <button id="btnRound1" class="roundbtn active" type="button" onclick="setRound(1)">Round 1</button>
-      <button id="btnRound2" class="roundbtn" type="button" onclick="setRound(2)">Round 2</button>
+      <!-- ✅ FILA 2: ROUND 1 + ROUND 2 + VOZ ACTIVA + VOZ PASIVA -->
+      <div class="roundrow">
+        <button id="btnRound1" class="roundbtn active" type="button" onclick="setRound(1)" data-help="Round 1: Pronombre + Verbo (sin complemento). Cambia el modo de práctica." title="Round 1: Pronombre + Verbo (sin complemento).">Round 1</button>
+        <button id="btnRound2" class="roundbtn" type="button" onclick="setRound(2)" data-help="Round 2: Pronombre + Verbo + Complemento. Cambia el modo de práctica." title="Round 2: Pronombre + Verbo + Complemento.">Round 2</button>
+</div>
 
-      <button id="btnActive" class="roundbtn active" type="button" onclick="setVoice('active')">VOZ ACTIVA</button>
-      <button id="btnPassive" class="roundbtn" type="button" onclick="setVoice('passive')">VOZ PASIVA</button>
+      <!-- ✅ FILA 3: REVIEW (CENTRADO) -->
+      <div class="roundrow">
+        <button class="roundbtn" type="button" onclick="abrirReview()" data-help="Review: repasa y gana XP extra con retos." title="Review: repasa y gana XP extra con retos.">REVIEW 🧩</button>
+      </div>
 
-      <button class="roundbtn" type="button" onclick="abrirReview()">REVIEW 🧩</button>
-
-      <span class="roundhint" id="roundHint">Round 1: oraciones básicas</span>
+      <!-- Hint -->
+      <div class="roundrow">
+        <span class="roundhint" id="roundHint">Round 1: oraciones básicas</span>
+      </div>
 
     </div>
 
@@ -1429,33 +1579,62 @@
       <input id="c3" placeholder="PARTICIPIO (C3)" autocomplete="off" />
     </div>
 
-    <button class="btn-main" onclick="validar()">CONECTAR NEURONAS</button>
+    <div class="audio" aria-label="Ayudas de pronunciación">
+      <button class="btn-audio btn-a" type="button" onclick="hablarC1()"
+        data-help="Escucha la pronunciación del verbo en C1 (Base)."
+        title="Escucha la pronunciación del verbo en C1 (Base).">🔊 LISTENING C1</button>
+      <button class="btn-audio btn-b" type="button" onclick="hablarC2()"
+        data-help="Escucha la pronunciación del verbo en C2 (Pasado)."
+        title="Escucha la pronunciación del verbo en C2 (Pasado).">🔊 LISTENING C2</button>
+      <button class="btn-audio btn-c" type="button" onclick="hablarC3()"
+        data-help="Escucha la pronunciación del verbo en C3 (Participio)."
+        title="Escucha la pronunciación del verbo en C3 (Participio).">🔊 LISTENING C3</button>
+</div>
+<button class="btn-main" onclick="validar()">CONECTAR NEURONAS</button>
+    <div id="msg"></div>
 
-    <div class="audio">
-      <button class="btn-audio btn-a" onclick="hablarTrio()">🔊 ESCUCHAR TRÍO</button>
-      <button class="btn-audio btn-b" onclick="deletrear()">⌨️ DELETREAR C1</button>
-    </div>
-
-    <div class="nav">
+    <div class="nav" id="readingNav" style="margin-top:18px; display:none;">
       <button onclick="cambiar(-1)">⬅️</button>
-      <span id="progreso">0 de 0</span>
+      <span id="progreso2" style="font-weight:900; color:var(--muted);">0 de 0</span>
       <button onclick="cambiar(1)">➡️</button>
     </div>
 
-    <div id="msg"></div>
 
     <div id="master">
+      
+
+    <!-- ✅ Voz Activa / Voz Pasiva (al inicio de la sección de conjugaciones) -->
+    <div class="roundrow voiceRowInTables" style="margin: 8px 0 14px 0;">
+      <button id="btnActive" class="roundbtn active" type="button" onclick="setVoice('active')"
+        data-help="Voz activa: el sujeto realiza la acción."
+        title="Voz activa: el sujeto realiza la acción.">VOZ ACTIVA</button>
+      <button id="btnPassive" class="roundbtn" type="button" onclick="setVoice('passive')"
+        data-help="Voz pasiva: el sujeto recibe la acción."
+        title="Voz pasiva: el sujeto recibe la acción.">VOZ PASIVA</button>
+    </div>
+
+    
       <div id="tablas"></div>
       <div id="spellingArea"></div>
       <div id="practiceArea"></div>
       <div id="readingArea"></div>
     </div>
 
-    <div class="nav" style="margin-top:18px;">
-      <button onclick="cambiar(-1)">⬅️</button>
-      <span id="progreso2" style="font-weight:900; color:var(--muted);">0 de 0</span>
-      <button onclick="cambiar(1)">➡️</button>
-    </div>
+    
+
+    <footer style="margin-top:18px; padding-top:14px; border-top:1px dashed #cbd5e1; display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:center;">
+
+      <div class="nav" id="readingNavFooter" style="margin-top:0; display:none;">
+        <button onclick="cambiar(-1)" aria-label="Anterior">⬅️</button>
+        <span id="progreso2Footer" style="font-weight:900; color:var(--muted);">0 de 0</span>
+        <button onclick="cambiar(1)" aria-label="Siguiente">➡️</button>
+      </div>
+
+      <div style="flex-basis:100%; height:0;"></div>
+
+<button class="roundbtn web" type="button" onclick="abrirWeb()"
+        title="Abre el sitio web SmartEbook (Google Sites) en una pestaña nueva.">Neuroaprendizaje del Inglés 🌐</button>
+    </footer>
 
   </div>
 
@@ -1467,152 +1646,47 @@
     </div>
   </div>
 
-  <!-- ✅ MODAL: INSTRUCCIONES -->
-  <div class="overlay" id="instOverlay">
-    <div class="modal">
-      <h2>📌 Instrucciones de uso (modo práctico)</h2>
+    <!-- ✅ MODAL: INSTRUCCIONES -->
+  <div class="overlay" id="instOverlay" style="display:none;">
+    <div class="modal modal-top">
+      <h2 style="margin-bottom:10px;">📌 Instrucciones</h2>
 
-      <div id="instActive" style="display:block; color:#0f172a; font-weight:850; line-height:1.35rem;">
-        <div style="background:#0b1220; color:#fff; border:2px solid var(--secondary); border-radius:16px; padding:12px 14px; margin-bottom:12px;">
-          <div style="font-weight:950; color:var(--secondary); margin-bottom:6px;">📚 Recomendación antes de empezar</div>
-          <div style="font-weight:850; color:#e5e7eb; line-height:1.35rem;">
-            Se recomienda <b>leer primero el libro en PDF (E-book)</b> y luego realizar los ejercicios de la app.
-            <br/>✅ El botón <b>E-BOOK</b> queda <b>siempre visible</b> para abrir el Smart E-book cuando lo necesites.
-          </div>
-        </div>
-
-        <div class="canva-embed">
-          <iframe loading="lazy"
-            src="https://www.canva.com/design/DAGiaYgaOxs/RMCSehA1T8Sm35n6gK9lnQ/view?embed"
-            allowfullscreen="allowfullscreen" allow="fullscreen">
-          </iframe>
-        </div>
-
-        <div style="display:flex; gap:10px; flex-wrap:wrap; margin: 6px 0 12px;">
-          <a class="btn-main btn-link" style="width:auto; padding:12px 14px;" href="https://sites.google.com/iemanueljbetancur.edu.co/smartebook/inicio" target="_blank" rel="noopener">IR AL SMART E-BOOK 🔗</a>
-          <button class="btn-main" style="width:auto; padding:12px 14px;" type="button" onclick="abrirEbook()">VER PDF EN GRANDE 📄</button>
-        </div>
-
-        <div style="background:#0b1220; color:#fff; border:2px solid var(--secondary); border-radius:16px; padding:12px 14px; margin-bottom:12px;">
-          <div style="font-weight:950; color:var(--secondary); margin-bottom:6px;">🎯 Objetivo (VOZ ACTIVA)</div>
-          Automatizar <b>C1</b>, <b>C2</b> y <b>C3</b> con oraciones en <b>presente</b>, <b>pasado</b> y <b>presente perfecto</b>, ganando XP.
-        </div>
-
+      <div style="color:#0f172a; font-weight:850; line-height:1.45rem;">
         <ol style="margin:0; padding-left:18px;">
-          <li style="margin-bottom:10px;">
-            <b>Elige Round:</b> Round 1 (básico) o Round 2 (con complemento).
-          </li>
-          <li style="margin-bottom:10px;">
-            <b>Selecciona Grupo y Día</b> para cargar la lista del reto.
-          </li>
-          <li style="margin-bottom:10px;">
-            <b>Conjuga:</b> escribe C1/C2/C3 y pulsa <b>Conectar Neuronas</b>.
-          </li>
-          <li style="margin-bottom:10px;">
-            <b>Al acertar:</b> abre <b>Tablas</b> + <b>Practice</b> + <b>Reading</b> y suma XP.
-          </li>
-          <li style="margin-bottom:0;">
-            <b>Audio:</b> usa 🔊 para escuchar y mejorar pronunciación.
-          </li>
+          <li style="margin-bottom:12px;"><b>Primero:</b> lee el <b>E-book</b> antes de empezar para entender el método de neuroaprendizaje. 
+            <a href="https://www.canva.com/design/DAGiaYgaOxs/RMCSehA1T8Sm35n6gK9lnQ/view" target="_blank" rel="noopener" style="font-weight:950;color:var(--primary);text-decoration:underline;">Abrir e-book en Canva ↗️</a></li>
+          <li style="margin-bottom:12px;"><b>Elige Round:</b> Round 1 (básico) o Round 2 (con complemento).</li>
+          <li style="margin-bottom:12px;"><b>Selecciona Grupo y Día</b> para cargar la lista del reto.</li>
+          <li style="margin-bottom:12px;"><b>Conjuga:</b> escribe C1/C2/C3 y pulsa <b>Conectar Neuronas</b>.</li>
+          <li style="margin-bottom:12px;"><b>Al acertar:</b> abre <b>Tablas</b> + <b>Practice</b> + <b>Reading</b> y suma XP.</li>
+          <li style="margin-bottom:0;"><b>Audio:</b> usa 🔊 para escuchar y mejorar pronunciación.</li>
         </ol>
 
-        <div style="margin-top:12px; background:#fff7ed; border:1px dashed #fed7aa; border-radius:14px; padding:10px 12px; color:#9a3412; font-weight:950;">
-          🟠 Tip: practica 3 verbos diarios en Round 2 para fijarlos con contexto.
+        <div style="margin-top:16px; background:#fff7ed; border:1px dashed #fdba74; border-radius:16px; padding:14px 16px;">
+          <div style="font-weight:950; color:#7c2d12; font-size:1.05rem;">🟠 Tip: practica 3 verbos diarios en Round 2 para fijarlos con contexto.</div>
         </div>
+
+        <button class="btn-main" style="margin-top:16px; width:100%;" onclick="cerrarInstrucciones()">ENTENDIDO ✅</button>
       </div>
-
-      <div id="instPassive" style="display:none; color:#0f172a; font-weight:850; line-height:1.35rem;">
-        <div style="background:#0b1220; color:#fff; border:2px solid var(--secondary); border-radius:16px; padding:12px 14px; margin-bottom:12px;">
-          <div style="font-weight:950; color:var(--secondary); margin-bottom:6px;">📚 Recomendación antes de empezar</div>
-          <div style="font-weight:850; color:#e5e7eb; line-height:1.35rem;">
-            Se recomienda <b>leer primero el libro en PDF (E-book)</b> y luego realizar los ejercicios de la app.
-            <br/>✅ El botón <b>E-BOOK</b> queda <b>siempre visible</b> para abrir el Smart E-book cuando lo necesites.
-          </div>
-        </div>
-
-        <div class="canva-embed">
-          <iframe loading="lazy"
-            src="https://www.canva.com/design/DAGiaYgaOxs/RMCSehA1T8Sm35n6gK9lnQ/view?embed"
-            allowfullscreen="allowfullscreen" allow="fullscreen">
-          </iframe>
-        </div>
-
-        <div style="display:flex; gap:10px; flex-wrap:wrap; margin: 6px 0 12px;">
-          <a class="btn-main btn-link" style="width:auto; padding:12px 14px;" href="https://sites.google.com/iemanueljbetancur.edu.co/smartebook/inicio" target="_blank" rel="noopener">IR AL SMART E-BOOK 🔗</a>
-          <button class="btn-main" style="width:auto; padding:12px 14px;" type="button" onclick="abrirEbook()">VER PDF EN GRANDE 📄</button>
-        </div>
-
-        <div style="background:#0b1220; color:#fff; border:2px solid var(--secondary); border-radius:16px; padding:12px 14px; margin-bottom:12px;">
-          <div style="font-weight:950; color:var(--secondary); margin-bottom:6px;">🎯 Objetivo (VOZ PASIVA)</div>
-          Dominar la estructura pasiva en 3 tiempos: <b>Present Simple Passive</b>, <b>Past Simple Passive</b>, <b>Present Perfect Passive</b>.
-        </div>
-
-        <div style="background:#f1f5f9;border-radius:16px;padding:12px 14px;border:1px solid #e2e8f0;margin-bottom:12px;">
-          <div style="font-weight:950;color:#0b1220;margin-bottom:6px;">✅ Regla de oro</div>
-          <div style="font-weight:900;color:#334155;">
-            <b>Objeto (complemento)</b> pasa a ser <b>Sujeto</b> + <b>BE</b> (am/is/are | was/were | has/have been) + <b>V3 (C3)</b> + (opcional) <b>by + agente</b>.
-          </div>
-        </div>
-
-        <ol style="margin:0; padding-left:18px;">
-          <li style="margin-bottom:10px;">
-            <b>Trabaja mejor en Round 2</b> porque da un complemento claro (objeto).
-          </li>
-          <li style="margin-bottom:10px;">
-            <b>Conjuga igual:</b> C1/C2/C3 siguen siendo la base; en pasiva se usa principalmente <b>C3</b>.
-          </li>
-          <li style="margin-bottom:10px;">
-            <b>Tablas pasivas:</b>
-            <ul style="margin:6px 0 0; padding-left:18px;">
-              <li><b>Presente pasivo:</b> The paper <b>is cut</b> (by me).</li>
-              <li><b>Pasado pasivo:</b> The paper <b>was cut</b> (by me).</li>
-              <li><b>Perfecto pasivo:</b> The paper <b>has been cut</b> (by me).</li>
-            </ul>
-          </li>
-          <li style="margin-bottom:0;">
-            <b>Practice + Reading</b> te piden escribir la oración en pasiva y refuerzan BE + V3.
-          </li>
-        </ol>
-
-        <div style="margin-top:12px; background:#fff7ed; border:1px dashed #fed7aa; border-radius:14px; padding:10px 12px; color:#9a3412; font-weight:950;">
-          🟠 Nota: Algunos verbos son <b>intransitivos</b> (no tienen objeto directo) y la pasiva no aplica de forma natural. La app te lo advierte cuando ocurra.
-        </div>
-      </div>
-
-      <button class="btn-main" style="margin-top:14px" onclick="cerrarInstrucciones()">ENTENDIDO ✅</button>
     </div>
   </div>
 
-  <!-- ✅✅✅ MODAL: E-BOOK (CANVA EMBED) -->
-  <div class="overlay" id="ebookOverlay">
-    <div class="modal">
-      <h2>📚 E-BOOK — Neuroaprendizaje de los Verbos Irregulares</h2>
 
-      <div class="canva-embed">
+  <!-- ✅ MODAL: E-BOOK (Canva) -->
+  <div class="overlay" id="ebookOverlay" style="display:none;">
+    <div class="modal modal-top">
+      <h2 style="margin-bottom:10px;">📚 E-book (Canva)</h2>
+
+      <a class="btn-main btn-link" href="https://www.canva.com/design/DAGiaYgaOxs/RMCSehA1T8Sm35n6gK9lnQ/view" target="_blank" rel="noopener" style="width:100%; margin-top:8px; background:#0b1220; color:#fff; border:2px solid rgba(0,0,0,.12);">ABRIR EN CANVA ↗️</a>
+
+<div class="canva-embed">
         <iframe loading="lazy"
           src="https://www.canva.com/design/DAGiaYgaOxs/RMCSehA1T8Sm35n6gK9lnQ/view?embed"
           allowfullscreen="allowfullscreen" allow="fullscreen">
         </iframe>
       </div>
 
-      <div style="display:flex; gap:10px; flex-wrap:wrap; margin: 6px 0 12px;">
-        <a class="btn-main btn-link" style="width:auto; padding:12px 14px;" href="https://sites.google.com/iemanueljbetancur.edu.co/smartebook/inicio" target="_blank" rel="noopener">IR AL SMART E-BOOK 🔗</a>
-        <a class="btn-main btn-link" style="width:auto; padding:12px 14px;" href="https:&#x2F;&#x2F;www.canva.com&#x2F;design&#x2F;DAGiaYgaOxs&#x2F;RMCSehA1T8Sm35n6gK9lnQ&#x2F;view?utm_content=DAGiaYgaOxs&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" target="_blank" rel="noopener">ABRIR CANVA 🔗</a>
-      </div>
-
-      <button class="btn-main" style="margin-top:14px" onclick="cerrarEbook()">CERRAR ✅</button>
-    </div>
-  </div>
-
-
-  <!-- ✅ TOAST: LOGROS / NIVEL -->
-  <div class="achieve" id="achieveToast" aria-live="polite">
-    <div class="achieve-card">
-      <div class="achieve-ico" id="achieveIcon">🏆</div>
-      <div>
-        <p class="achieve-title" id="achieveTitle">¡Logro desbloqueado!</p>
-        <p class="achieve-desc" id="achieveDesc">Sigue así.</p>
-      </div>
+      <button class="btn-main" style="margin-top:14px; width:100%;" onclick="cerrarEbook()">CERRAR ✖️</button>
     </div>
   </div>
 
@@ -2019,6 +2093,8 @@ let idx=0, current=[];
 let pendingVerb = null;
 
 let currentRound = 1;
+
+let focusGroupAfterLoad = false; // ✅ para que al cambiar Round el foco vaya a Grupo
 let activeDB = verbosDB_R1;
 
 /* ✅ NUEVO: MODO DE VOZ */
@@ -2495,32 +2571,151 @@ function thirdPersonS(verb){
   if (/[^aeiou]y$/.test(v)) return v.slice(0,-1) + "ies";
   return v + "s";
 }
+function isBeVerb(v){ return String(v.c1||"").toLowerCase().trim()==="be"; }
+
+/* ===========================
+   ✅ COLORES (C1/C2/C3) EN TABLAS
+   =========================== */
+function escapeRegExp(s){
+  return String(s||"").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+function highlightPhrase(line, phrase, cls){
+  const ph = String(phrase||"").trim();
+  if(!ph) return line;
+  const re = new RegExp(`(^|\\s)(${escapeRegExp(ph)})(?=\\s|[?.!,]|$)`, "i");
+  return String(line||"").replace(re, (m, g1, g2)=>`${g1}<span class="${cls}">${g2}</span>`);
+}
+function colorizeConjugation(enLine, tKind, moodKey, p, v, modeUsed){
+  let s = String(enLine||"");
+
+  // PASIVA: siempre V3 (C3)
+  if(modeUsed==="passive"){
+    return highlightPhrase(s, v.c3, "v-c3");
+  }
+
+  // ACTIVA (incluye el caso en que la pasiva no aplica y se fuerza activa)
+  const isBe = isBeVerb(v);
+
+  if(isBe){
+    // BE: am/is/are — was/were — been
+    if(tKind==="P"){
+      const k = p.key || p;
+      const form = (k==="I") ? "am" : (k==="He"||k==="She"||k==="It") ? "is" : "are";
+      const target = (moodKey==="Q") ? capFirst(form) : form;
+      return highlightPhrase(s, target, "v-c1");
+    }
+    if(tKind==="S"){
+      const k = p.key || p;
+      const basePast = (k==="YouP"||k==="You"||k==="We"||k==="They") ? "were" : "was";
+      if(moodKey==="N"){
+        const neg = (basePast==="was") ? "wasn't" : "weren't";
+        return highlightPhrase(s, neg, "v-c2");
+      }
+      const target = (moodKey==="Q") ? capFirst(basePast) : basePast;
+      return highlightPhrase(s, target, "v-c2");
+    }
+    // PP
+    return highlightPhrase(s, "been", "v-c3");
+  }
+
+  // Verbos normales: C1 / C2 / C3 según tiempo y modo
+  if(tKind==="P"){
+    if(moodKey==="A"){
+      const base = String(v.c1||"").trim();
+      const verbForm = isThirdSing(p) ? thirdPersonS(base) : base;
+      return highlightPhrase(s, verbForm, "v-c1");
+    }
+    return highlightPhrase(s, v.c1, "v-c1"); // N y Q usan base
+  }
+
+  if(tKind==="S"){
+    if(moodKey==="A"){
+      return highlightPhrase(s, v.c2, "v-c2");
+    }
+    return highlightPhrase(s, v.c1, "v-c1"); // N y Q usan base
+  }
+
+  // PP
+  return highlightPhrase(s, v.c3, "v-c3");
+}
+
 function makePresent(p, v){
+  if(isBeVerb(v)){
+    const k = p.key || p; // allow p object
+    if(k==="I") return "I am";
+    if(k==="He"||k==="She"||k==="It") return `${subjCap(p)} is`;
+    return `${subjCap(p)} are`;
+  }
   const base = v.c1;
   const verbForm = isThirdSing(p) ? thirdPersonS(base) : base;
   return `${subjCap(p)} ${verbForm}`;
 }
 function makePresentNeg(p, v){
+  if(isBeVerb(v)){
+    const k = p.key || p;
+    if(k==="I") return "I am not";
+    if(k==="He"||k==="She"||k==="It") return `${subjCap(p)} is not`;
+    return `${subjCap(p)} are not`;
+  }
   const aux = isThirdSing(p) ? "doesn't" : "don't";
   return `${subjCap(p)} ${aux} ${v.c1}`;
 }
 function makePresentQ(p, v){
+  if(isBeVerb(v)){
+    const k = p.key || p;
+    if(k==="I") return "Am I?";
+    if(k==="He"||k==="She"||k==="It") return `Is ${subjLow(p)}?`;
+    return `Are ${subjLow(p)}?`;
+  }
   const aux = isThirdSing(p) ? "Does" : "Do";
   return `${aux} ${subjLow(p)} ${v.c1}?`;
 }
-function makePast(p, v){ return `${subjCap(p)} ${v.c2}`; }
-function makePastNeg(p, v){ return `${subjCap(p)} didn't ${v.c1}`; }
-function makePastQ(p, v){ return `Did ${subjLow(p)} ${v.c1}?`; }
+function makePast(p, v){
+  if(isBeVerb(v)){
+    const k = p.key || p;
+    if(k==="YouP"||k==="You"||k==="We"||k==="They") return `${subjCap(p)} were`;
+    return `${subjCap(p)} was`;
+  }
+  return `${subjCap(p)} ${v.c2}`;
+}
+function makePastNeg(p, v){
+  if(isBeVerb(v)){
+    const k = p.key || p;
+    if(k==="YouP"||k==="You"||k==="We"||k==="They") return `${subjCap(p)} weren't`;
+    return `${subjCap(p)} wasn't`;
+  }
+  return `${subjCap(p)} didn't ${v.c1}`;
+}
+function makePastQ(p, v){
+  if(isBeVerb(v)){
+    const k = p.key || p;
+    if(k==="YouP"||k==="You"||k==="We"||k==="They") return `Were ${subjLow(p)}?`;
+    return `Was ${subjLow(p)}?`;
+  }
+  return `Did ${subjLow(p)} ${v.c1}?`;
+}
 
 function makePP(p, v){
+  if(isBeVerb(v)){
+    const aux = isThirdSing(p) ? "has" : "have";
+    return `${subjCap(p)} ${aux} been`;
+  }
   const aux = isThirdSing(p) ? "has" : "have";
   return `${subjCap(p)} ${aux} ${v.c3}`;
 }
 function makePPNeg(p, v){
+  if(isBeVerb(v)){
+    const aux = isThirdSing(p) ? "hasn't" : "haven't";
+    return `${subjCap(p)} ${aux} been`;
+  }
   const aux = isThirdSing(p) ? "hasn't" : "haven't";
   return `${subjCap(p)} ${aux} ${v.c3}`;
 }
 function makePPQ(p, v){
+  if(isBeVerb(v)){
+    const aux = isThirdSing(p) ? "Has" : "Have";
+    return `${aux} ${subjLow(p)} been?`;
+  }
   const aux = isThirdSing(p) ? "Has" : "Have";
   return `${aux} ${subjLow(p)} ${v.c3}?`;
 }
@@ -2582,7 +2777,7 @@ function isProbablyPluralEN(np){
 function passiveAllowed(v){
   // pasiva natural requiere verbo transitivo (objeto directo).
   // Lista corta de verbos típicamente intransitivos en este set (se advierte al usuario).
-  const no = new Set(["go","come","become","arise","rise","fall"]);
+  const no = new Set(["go","come","become","arise","rise","fall","be"]);
   return !no.has(String(v.c1||"").toLowerCase().trim());
 }
 function subjForPassive(v){
@@ -2723,6 +2918,8 @@ function setVoice(mode){
    ✅ ROUND SELECTOR
    =========================== */
 function setRound(n){
+  // ✅ Al cambiar Round, NO enfocar BASE; enfocar selector de Grupo
+  focusGroupAfterLoad = true;
   currentRound = n===2 ? 2 : 1;
   activeDB = (currentRound===2) ? verbosDB_R2 : verbosDB_R1;
 
@@ -2814,11 +3011,12 @@ function conjugarDesdeModal(){
 function abrirInstrucciones(){
   const o = document.getElementById("instOverlay");
   if(o) o.style.display = "flex";
+  // asegura que el modal quede visible arriba
+  try{
+    const modal = o?.querySelector?.(".modal");
+    if(modal) modal.scrollTop = 0;
+  }catch(_){}
   syncModalOpen();
-
-  // muestra instrucciones según voz
-  document.getElementById("instActive").style.display = (voiceMode==="active") ? "block" : "none";
-  document.getElementById("instPassive").style.display = (voiceMode==="passive") ? "block" : "none";
 }
 function cerrarInstrucciones(){
   const o = document.getElementById("instOverlay");
@@ -2839,6 +3037,14 @@ function cerrarEbook(){
   if(o) o.style.display = "none";
   syncModalOpen();
 }
+
+/* ===========================
+   ✅ BOTÓN WEB
+   =========================== */
+function abrirWeb(){
+  window.open('https://sites.google.com/iemanueljbetancur.edu.co/smartebook/inicio','_blank');
+}
+
 
 /* ===========================
    INIT / UI
@@ -2885,6 +3091,16 @@ window.addEventListener("keydown", (e)=>{
 });
 
 function actualizarDias(){
+
+  // ✅ Mantener visible la sección "Selecciona Grupo"
+  try{
+    const sg = document.getElementById('sel-grupo');
+    if(sg){
+      sg.focus();
+      sg.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+  }catch(_){}
+
   const g = parseInt(document.getElementById('sel-grupo').value,10);
   renderGroupHint(g);
 
@@ -2925,19 +3141,35 @@ function mostrar(){
     el.style.borderColor="#e2e8f0";
   });
 
-  document.getElementById('progreso').innerText = `${idx+1} de ${current.length}`;
+  const p1 = document.getElementById('progreso');
+  if(p1) p1.innerText = `${idx+1} de ${current.length}`;
   const p2 = document.getElementById('progreso2');
   if(p2) p2.innerText = `${idx+1} de ${current.length}`;
+  const p2f = document.getElementById('progreso2Footer');
+  if(p2f) p2f.innerText = `${idx+1} de ${current.length}`;
 
   document.getElementById('msg').innerText="";
   document.getElementById('master').style.display="none";
   document.getElementById('spellingArea').innerHTML = "";
   document.getElementById('practiceArea').innerHTML = "";
   document.getElementById('readingArea').innerHTML = "";
+  const rn = document.getElementById('readingNav');
+  if(rn) rn.style.display = "none";
+  const rnf = document.getElementById('readingNavFooter');
+  if(rnf) rnf.style.display = "none";
   spellingState = null;
   practiceState = null;
 
-  document.getElementById('c1').focus();
+  // ✅ Foco inteligente: si vienes de cambiar Round, ubica el cursor en Grupo
+  if(focusGroupAfterLoad){
+    focusGroupAfterLoad = false;
+    try{
+      const sg = document.getElementById('sel-grupo');
+      if(sg){ sg.focus(); sg.scrollIntoView({behavior:'smooth', block:'center'}); }
+    }catch(_){ }
+  }else{
+    document.getElementById('c1').focus();
+  }
 }
 
 function cambiar(step){
@@ -2946,10 +3178,22 @@ function cambiar(step){
   mostrar();
 }
 
-function hablarTrio(){
+function hablarC1(){
   const v=current[idx];
-  hablar(`${v.c1}, ${v.c2}, ${v.c3}`);
+  if(!v) return;
+  hablar(v.c1);
 }
+function hablarC2(){
+  const v=current[idx];
+  if(!v) return;
+  hablar(v.c2);
+}
+function hablarC3(){
+  const v=current[idx];
+  if(!v) return;
+  hablar(v.c3);
+}
+
 function deletrear(){
   const v=current[idx];
   hablar(v.c1.split("").join("... "));
@@ -3039,6 +3283,371 @@ function actualizarStats(){
   persistState();
 }
 
+
+/* ===========================
+   🇪🇸 CONJUGADOR ESPAÑOL (para traducciones en tablas)
+   - Conjugación básica + irregularidades frecuentes
+   - Soporta verbos reflexivos (terminan en -se)
+   - Soporta glosas con "/" o frases ("llegar a ser", "usar/llevar puesto")
+   =========================== */
+const PRON_IDX = {I:0, You:1, He:2, She:3, It:4, We:5, YouP:6, They:7};
+const ES_REFLEX = {I:"me", You:"te", He:"se", She:"se", It:"se", We:"nos", YouP:"se", They:"se"};
+const ES_HABER  = {I:"he", You:"has", He:"ha", She:"ha", It:"ha", We:"hemos", YouP:"han", They:"han"};
+
+function _deaccent(s){
+  return (s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+}
+function parseSpanishGloss(gloss){
+  let raw = (gloss||"").trim();
+  // si hay varias opciones, usamos la primera para conjugar
+  raw = raw.split("/")[0].trim();
+  raw = raw.replace(/\s+/g," ").toLowerCase();
+
+  // reflexivo
+  let reflexive = false;
+  if(raw.endsWith("se")){
+    reflexive = true;
+    raw = raw.slice(0,-2).trim();
+  }
+
+  // frases (ej: "llegar a ser", "dar a luz"): conjugamos el 1er verbo y anexamos el resto
+  let base = raw, tail = "";
+  if(raw.includes(" ")){
+    const parts = raw.split(" ");
+    base = parts.shift();
+    tail = parts.join(" ");
+  }
+  return { base, tail, reflexive, key:_deaccent(base) };
+}
+
+// ✅ Irregularidades (solo las necesarias para el set de 180 verbos)
+const IRR_PRESENT_FULL = {
+  ser:     ["soy","eres","es","es","es","somos","son","son"],
+  estar:   ["estoy","estás","está","está","está","estamos","están","están"],
+  ir:      ["voy","vas","va","va","va","vamos","van","van"],
+  dar:     ["doy","das","da","da","da","damos","dan","dan"],
+  ver:     ["veo","ves","ve","ve","ve","vemos","ven","ven"],
+  haber:   ["he","has","ha","ha","ha","hemos","han","han"],
+  saber:   ["sé","sabes","sabe","sabe","sabe","sabemos","saben","saben"],
+  caber:   ["quepo","cabes","cabe","cabe","cabe","cabemos","caben","caben"],
+  caer:    ["caigo","caes","cae","cae","cae","caemos","caen","caen"],
+  hacer:   ["hago","haces","hace","hace","hace","hacemos","hacen","hacen"],
+  decir:   ["digo","dices","dice","dice","dice","decimos","dicen","dicen"],
+  poner:   ["pongo","pones","pone","pone","pone","ponemos","ponen","ponen"],
+  traer:   ["traigo","traes","trae","trae","trae","traemos","traen","traen"],
+  venir:   ["vengo","vienes","viene","viene","viene","venimos","vienen","vienen"],
+  conducir:["conduzco","conduces","conduce","conduce","conduce","conducimos","conducen","conducen"],
+  oir:     ["oigo","oyes","oye","oye","oye","oímos","oyen","oyen"], // oír
+};
+
+const IRR_PRET = {
+  ser:     ["fui","fuiste","fue","fue","fue","fuimos","fueron","fueron"],
+  ir:      ["fui","fuiste","fue","fue","fue","fuimos","fueron","fueron"],
+  dar:     ["di","diste","dio","dio","dio","dimos","dieron","dieron"],
+  ver:     ["vi","viste","vio","vio","vio","vimos","vieron","vieron"],
+  caer:    ["caí","caíste","cayó","cayó","cayó","caímos","cayeron","cayeron"],
+  oir:     ["oí","oíste","oyó","oyó","oyó","oímos","oyeron","oyeron"],
+  caber:   ["cupe","cupiste","cupo","cupo","cupo","cupimos","cupieron","cupieron"],
+  hacer:   ["hice","hiciste","hizo","hizo","hizo","hicimos","hicieron","hicieron"],
+  poner:   ["puse","pusiste","puso","puso","puso","pusimos","pusieron","pusieron"],
+  venir:   ["vine","viniste","vino","vino","vino","vinimos","vinieron","vinieron"],
+  traer:   ["traje","trajiste","trajo","trajo","trajo","trajimos","trajeron","trajeron"],
+  decir:   ["dije","dijiste","dijo","dijo","dijo","dijimos","dijeron","dijeron"],
+  conducir:["conduje","condujiste","condujo","condujo","condujo","condujimos","condujeron","condujeron"],
+};
+
+const IRR_PART = {
+  abrir:"abierto",
+  cubrir:"cubierto",
+  decir:"dicho",
+  escribir:"escrito",
+  hacer:"hecho",
+  morir:"muerto",
+  poner:"puesto",
+  romper:"roto",
+  ver:"visto",
+  volver:"vuelto",
+  resolver:"resuelto",
+  oir:"oído",
+};
+
+const STEM_E_IE = new Set(["cerrar","empezar","pensar","sentir","perder","entender","mentir","herir","sentar","despertar"]);
+const STEM_O_UE = new Set(["dormir","encontrar","mostrar","sonar","costar","morder","volar","esforzar"]);
+const STEM_E_I  = new Set(["sentir","mentir","herir"]);
+const PRET_IR_STEM_E_I = new Set(["sentir","mentir","herir"]);
+const PRET_IR_STEM_O_U = new Set(["dormir"]);
+const UIR_Y = new Set(["construir","huir"]);
+
+function presentStemChanged(key, stem){
+  // aplica el cambio al ÚLTIMO núcleo vocálico típico
+  const vowels = stem.split("");
+  for(let i=vowels.length-1;i>=0;i--){
+    const ch=vowels[i];
+    if(ch==="e" && STEM_E_IE.has(key)){
+      vowels[i] = "ie";
+      return vowels.join("").replace(/ie(?=ie)/g,"ie"); // seguro
+    }
+    if(ch==="o" && STEM_O_UE.has(key)){
+      vowels[i] = "ue";
+      return vowels.join("");
+    }
+    if(ch==="e" && STEM_E_I.has(key)){
+      vowels[i] = "i";
+      return vowels.join("");
+    }
+  }
+  return stem;
+}
+
+function esPresent(espGloss, pronKey){
+  const {base, tail, reflexive, key} = parseSpanishGloss(espGloss);
+  const idx = PRON_IDX[pronKey];
+  if(IRR_PRESENT_FULL[key]) return { form: IRR_PRESENT_FULL[key][idx], tail, reflexive, key };
+
+  const baseNorm = _deaccent(base);
+  const end = baseNorm.slice(-2);
+  const stem = base.slice(0,-2);
+
+  let stemUse = stem;
+  // stem-change (no aplica en "nosotros")
+  if(idx !== PRON_IDX.We){
+    stemUse = presentStemChanged(key, stemUse);
+  }
+
+  // -uir (no -guir): construyo, huyes, etc.
+  if(baseNorm.endsWith("uir") && !baseNorm.endsWith("guir") && idx !== PRON_IDX.We){
+    stemUse = stem + "y";
+  }
+
+  const endings = (end==="ar")
+    ? ["o","as","a","a","a","amos","an","an"]
+    : (end==="er")
+      ? ["o","es","e","e","e","emos","en","en"]
+      : ["o","es","e","e","e","imos","en","en"];
+
+  return { form: stemUse + endings[idx], tail, reflexive, key };
+}
+
+function preteriteStemChanged(key, stem, idx){
+  if(idx===PRON_IDX.He || idx===PRON_IDX.She || idx===PRON_IDX.It || idx===PRON_IDX.YouP || idx===PRON_IDX.They){
+    if(PRET_IR_STEM_O_U.has(key)){
+      return stem.replace(/o(?!.*o)/,"u"); // último "o" -> "u"
+    }
+    if(PRET_IR_STEM_E_I.has(key)){
+      return stem.replace(/e(?!.*e)/,"i"); // último "e" -> "i"
+    }
+  }
+  return stem;
+}
+
+function esPreterite(espGloss, pronKey){
+  const {base, tail, reflexive, key} = parseSpanishGloss(espGloss);
+  const idx = PRON_IDX[pronKey];
+  if(IRR_PRET[key]) return { form: IRR_PRET[key][idx], tail, reflexive, key };
+
+  const baseNorm = _deaccent(base);
+  const end = baseNorm.slice(-2);
+  let stem = base.slice(0,-2);
+
+  // cambios ortográficos en "yo": -car/-gar/-zar
+  if(idx===PRON_IDX.I){
+    if(baseNorm.endsWith("car")) stem = stem.slice(0,-1) + "qu";
+    if(baseNorm.endsWith("gar")) stem = stem.slice(0,-1) + "gu";
+    if(baseNorm.endsWith("zar")) stem = stem.slice(0,-1) + "c";
+  }
+
+  // -uir (3a persona) -> yó/yeron
+  if(UIR_Y.has(key) && (idx===PRON_IDX.He || idx===PRON_IDX.She || idx===PRON_IDX.It || idx===PRON_IDX.YouP || idx===PRON_IDX.They)){
+    const endings = ["í","iste","yó","yó","yó","imos","yeron","yeron"];
+    return { form: stem + endings[idx], tail, reflexive, key };
+  }
+
+  // stem-change pretérito solo en 3as personas (-ir)
+  stem = preteriteStemChanged(key, stem, idx);
+
+  const endings = (end==="ar")
+    ? ["é","aste","ó","ó","ó","amos","aron","aron"]
+    : ["í","iste","ió","ió","ió","imos","ieron","ieron"];
+
+  return { form: stem + endings[idx], tail, reflexive, key };
+}
+
+function esParticiple(espGloss){
+  const {base, tail, reflexive, key} = parseSpanishGloss(espGloss);
+  if(IRR_PART[key]) return { part: IRR_PART[key], tail, reflexive, key };
+
+  const baseNorm = _deaccent(base);
+  const end = baseNorm.slice(-2);
+  const stem = base.slice(0,-2);
+  const part = (end==="ar") ? (stem + "ado") : (stem + "ido");
+  return { part, tail, reflexive, key };
+}
+
+function buildSpanishActiveLine(tKind, modeKey, p, v, comp){
+  // ✅ Round 1: SOLO pronombre + verbo (sin complemento)
+  // ✅ Round 2: pronombre + verbo + complemento
+  const useComp = (currentRound===2); // Round 2: con complemento en todas las conjugaciones/tiempos (incluye "be")
+  const compEs = (useComp && comp && comp.es) ? (" " + comp.es) : "";
+  const pronEs = p.es;
+
+  // ✅ Caso especial: TO BE (Ser/Estar) - Grupo 3 Día 40
+  if(isBeVerb(v)){
+    const k = p.key;
+
+    // ✅ Round 2: agregar complemento también a "to be" (incluye preguntas)
+    const beAddComp = (s)=>{
+      if(!compEs) return s;
+      return String(s).split(" / ").map(part=>{
+        part = String(part||"").trim();
+        if(!part) return part;
+        if(part.endsWith("?")){
+          return (part.slice(0,-1).trim() + compEs + "?").replace(/\s+/g," ").trim();
+        }
+        return (part + compEs).replace(/\s+/g," ").trim();
+      }).join(" / ");
+    };
+
+    // helpers por pronombre
+    const es_pres_A = {
+      I:"Yo soy / Yo estoy",
+      You:"Tú eres / Tú estás",
+      He:"Él es / Él está",
+      She:"Ella es / Ella está",
+      It:"Eso es / Eso está",
+      We:"Nosotros somos / estamos",
+      YouP:"Ustedes son / están",
+      They:"Ellos son / están"
+    };
+    const es_pres_N = {
+      I:"Yo no soy / estoy",
+      You:"Tú no eres / estás",
+      He:"Él no es / está",
+      She:"Ella no es / está",
+      It:"Eso no es / está",
+      We:"Nosotros no somos / estamos",
+      YouP:"Ustedes no son / están",
+      They:"Ellos no son / están"
+    };
+    const es_pres_Q = {
+      I:"¿Soy yo? / ¿Estoy yo?",
+      You:"¿Eres tú? / ¿Estás tú?",
+      He:"¿Es él? / ¿Está él?",
+      She:"¿Es ella? / ¿Está ella?",
+      It:"¿Es eso? / ¿Está eso?",
+      We:"¿Somos nosotros? / ¿Estamos?",
+      YouP:"¿Son ustedes? / ¿Están ustedes?",
+      They:"¿Son ellos? / ¿Están ellos?"
+    };
+
+    const es_past_A = {
+      I:"Yo fui / estuve",
+      You:"Tú fuiste / estuviste",
+      He:"Él fue / estuvo",
+      She:"Ella fue / estuvo",
+      It:"Eso fue / estuvo",
+      We:"Nosotros fuimos / estuvimos",
+      YouP:"Ustedes fueron / estuvieron",
+      They:"Ellos fueron / estuvieron"
+    };
+    const es_past_N = {
+      I:"Yo no fui / estuve",
+      You:"Tú no fuiste / estuviste",
+      He:"Él no fue / estuvo",
+      She:"Ella no fue / estuvo",
+      It:"Eso no fue / estuvo",
+      We:"Nosotros no fuimos / estuvimos",
+      YouP:"Ustedes no fueron / estuvieron",
+      They:"Ellos no fueron / estuvieron"
+    };
+    const es_past_Q = {
+      I:"¿Fui yo? / ¿Estuve yo?",
+      You:"¿Fuiste tú? / ¿Estuviste?",
+      He:"¿Fue él? / ¿Estuvo él?",
+      She:"¿Fue ella? / ¿Estuvo ella?",
+      It:"¿Fue eso? / ¿Estuvo eso?",
+      We:"¿Fuimos nosotros? / ¿Estuvimos?",
+      YouP:"¿Fueron ustedes? / ¿Estuvieron?",
+      They:"¿Fueron ellos? / ¿Estuvieron?"
+    };
+
+    const es_pp_A = {
+      I:"Yo he sido / estado",
+      You:"Tú has sido / estado",
+      He:"Él ha sido / estado",
+      She:"Ella ha sido / estado",
+      It:"Eso ha sido / estado",
+      We:"Nosotros hemos sido / estado",
+      YouP:"Ustedes han sido / estado",
+      They:"Ellos han sido / estado"
+    };
+    const es_pp_N = {
+      I:"Yo no he sido / estado",
+      You:"Tú no has sido / estado",
+      He:"Él no ha sido / estado",
+      She:"Ella no ha sido / estado",
+      It:"Eso no ha sido / estado",
+      We:"Nosotros no hemos sido / estado",
+      YouP:"Ustedes no han sido / estado",
+      They:"Ellos no han sido / estado"
+    };
+    const es_pp_Q = {
+      I:"¿He sido / estado yo?",
+      You:"¿Has sido / estado tú?",
+      He:"¿Ha sido / estado él?",
+      She:"¿Ha sido / estado ella?",
+      It:"¿Ha sido / estado eso?",
+      We:"¿Hemos sido / estado nosotros?",
+      YouP:"¿Han sido / estado ustedes?",
+      They:"¿Han sido / estado ellos?"
+    };
+
+    if(tKind==="P"){
+      if(modeKey==="A") return beAddComp(es_pres_A[k] || `${pronEs} soy / estoy`);
+      if(modeKey==="N") return beAddComp(es_pres_N[k] || `${pronEs} no soy / estoy`);
+      return beAddComp(es_pres_Q[k] || `¿${pronEs} soy / estoy?`);
+    }
+    if(tKind==="S"){
+      if(modeKey==="A") return beAddComp(es_past_A[k] || `${pronEs} fui / estuve`);
+      if(modeKey==="N") return beAddComp(es_past_N[k] || `${pronEs} no fui / estuve`);
+      return beAddComp(es_past_Q[k] || `¿${pronEs} fui / estuve?`);
+    }
+    // PP
+    if(modeKey==="A") return beAddComp(es_pp_A[k] || `${pronEs} he sido / estado`);
+    if(modeKey==="N") return beAddComp(es_pp_N[k] || `${pronEs} no he sido / estado`);
+    return beAddComp(es_pp_Q[k] || `¿He sido / estado ${pronEs.toLowerCase()}?`);
+  }
+
+  if(tKind==="P"){ // presente simple
+    const {form, tail, reflexive} = esPresent(v.esp, p.key);
+    const tailTxt = tail ? (" " + tail) : "";
+    const ref = reflexive ? (ES_REFLEX[p.key] + " ") : "";
+    if(modeKey==="A") return `${pronEs} ${ref}${form}${tailTxt}${compEs}`.replace(/\s+/g," ").trim();
+    if(modeKey==="N") return `${pronEs} no ${ref}${form}${tailTxt}${compEs}`.replace(/\s+/g," ").trim();
+    return `¿${pronEs} ${ref}${form}${tailTxt}${compEs}?`.replace(/\s+/g," ").trim();
+  }
+
+  if(tKind==="S"){ // pasado simple (pretérito)
+    const {form, tail, reflexive} = esPreterite(v.esp, p.key);
+    const tailTxt = tail ? (" " + tail) : "";
+    const ref = reflexive ? (ES_REFLEX[p.key] + " ") : "";
+    if(modeKey==="A") return `${pronEs} ${ref}${form}${tailTxt}${compEs}`.replace(/\s+/g," ").trim();
+    if(modeKey==="N") return `${pronEs} no ${ref}${form}${tailTxt}${compEs}`.replace(/\s+/g," ").trim();
+    return `¿${pronEs} ${ref}${form}${tailTxt}${compEs}?`.replace(/\s+/g," ").trim();
+  }
+
+  // Presente perfecto: haber + participio
+  const aux = ES_HABER[p.key];
+  const {part, tail, reflexive} = esParticiple(v.esp);
+  const tailTxt = tail ? (" " + tail) : "";
+  const ref = reflexive ? (ES_REFLEX[p.key] + " ") : "";
+
+  if(modeKey==="A") return `${pronEs} ${ref}${aux} ${part}${tailTxt}${compEs}`.replace(/\s+/g," ").trim();
+  if(modeKey==="N") return `${pronEs} no ${ref}${aux} ${part}${tailTxt}${compEs}`.replace(/\s+/g," ").trim();
+
+  // En preguntas de perfecto (para verbos normales) se mantiene el estilo sin sujeto:
+  return `¿${aux} ${ref}${part}${tailTxt}${compEs}?`.replace(/\s+/g," ").trim();
+}
+
 /* ===========================
    ✅ TABLAS (ACTIVA / PASIVA)
    =========================== */
@@ -3079,7 +3688,7 @@ function generarTablas(v){
     html += `<div class="time-head">${head}</div><div class="grid">`;
 
     modos.forEach(m=>{
-      html += `<div class="card"><strong>${m.titulo}</strong><table>`;
+      html += `<div class="card"><strong>${m.titulo}</strong><table class="conj-table"><thead><tr><th>Oración</th></tr></thead><tbody>`;
 
       PRON.forEach(p=>{
         let en="";
@@ -3099,18 +3708,17 @@ function generarTablas(v){
           if(t.kind==="PP" && m.key==="Q") en = makePPQ(p,v);
 
           en = enWithComplement(en, comp.en);
-          // español (activa) -> simple: “(la app ya lo muestra con conjugador del módulo anterior)”
-          // Para mantener el flujo, aquí dejamos una equivalencia neutra:
-          let esLine = (currentRound===2)
-            ? `(${p.es}) + verbo + ${comp.es}`
-            : `(${p.es}) + verbo`;
+
+          // 🇪🇸 Traducción (activa) con conjugación real
+          const esLine = buildSpanishActiveLine(t.kind, m.key, p, v, comp);
+          const enHTML = colorizeConjugation(en, t.kind, m.key, p, v, "active");
 
           html += `
             <tr>
-              <td>
+              <td class="en-col">
                 <button class="btn-listen" type="button" data-say="${encodeURIComponent(en)}">🔊</button>
-                <span class="en">${en}</span>
-                <span class="es">${esLine}</span>
+                <span class="en">${enHTML}</span>
+                <div class="es">${esLine}</div>
               </td>
             </tr>`;
           return;
@@ -3131,18 +3739,19 @@ function generarTablas(v){
 
         // Español: estructura correcta tipo "Se ha hecho la tarea."
         const esLine = esSePassive(t.kind, m.key, subjPas.es);
+        const enHTML = colorizeConjugation(en, t.kind, m.key, p, v, "passive");
 
         html += `
           <tr>
-            <td>
+            <td class="en-col">
               <button class="btn-listen" type="button" data-say="${encodeURIComponent(en)}">🔊</button>
-              <span class="en">${en}</span>
-              <span class="es">${esLine}</span>
+              <span class="en">${enHTML}</span>
+              <div class="es">${esLine}</div>
             </td>
           </tr>`;
       });
 
-      html += `</table>
+      html += `</tbody></table>
         <div class="legend">${
           voiceMode==="passive"
             ? `Voz pasiva: <b>${subjPas.en}</b> + BE + V3 (C3) + (by + agente).`
@@ -3308,14 +3917,43 @@ function renderPractice(v){
       q7Expected: makeExpectedSet([en7Base, ...en7Variants]),
       q8Expected: makeExpectedSet([en8Base, ...en8Variants]),
       q9Expected: makeExpectedSet([en9Base]),
-      es: {
-        4: (currentRound===2) ? `Yo ${v.esp.toLowerCase()} ${getComplement(v).es} ayer.` : `Yo ${v.esp.toLowerCase()} ayer.`,
-        5: (currentRound===2) ? `Ella no ${v.esp.toLowerCase()} ${getComplement(v).es} todos los días.` : `Ella no ${v.esp.toLowerCase()} todos los días.`,
-        6: (currentRound===2) ? `¿Ellos ${v.esp.toLowerCase()} ${getComplement(v).es}?` : `¿Ellos ${v.esp.toLowerCase()}?`,
-        7: (currentRound===2) ? `Nosotros hemos ${v.esp.toLowerCase()} ${getComplement(v).es} ya.` : `Nosotros hemos ${v.esp.toLowerCase()} ya.`,
-        8: (currentRound===2) ? `Él no ha ${v.esp.toLowerCase()} ${getComplement(v).es}.` : `Él no ha ${v.esp.toLowerCase()}.`,
-        9: (currentRound===2) ? `¿Tú ${v.esp.toLowerCase()} ${getComplement(v).es} anoche?` : `¿Tú ${v.esp.toLowerCase()} anoche?`
-      }
+      es: (function(){
+        const comp = getComplement(v);
+        const pI = PRON[0];
+        const pShe = PRON[3];
+        const pThey = PRON[7];
+        const pWe = PRON[5];
+        const pHe = PRON[2];
+        const pYou = PRON[1];
+
+        const addTailEs = (line, tail)=>{
+          line = String(line||"").replace(/\s+/g," ").trim();
+          tail = String(tail||"").trim();
+          if(!tail) return line;
+          // insertar antes de '?'
+          if(line.endsWith("?")){
+            const base = line.slice(0,-1).trim();
+            tail = tail.replace(/[?]+$/,"").trim();
+            return (base + " " + tail + "?").replace(/\s+/g," ").trim();
+          }
+          return (line + " " + tail).replace(/\s+/g," ").trim();
+        };
+        const ensurePeriodEs = (line)=>{
+          line = String(line||"").trim();
+          if(!line) return line;
+          if(/[\.!?]$/.test(line)) return line;
+          return line + ".";
+        };
+
+        return {
+          4: ensurePeriodEs(addTailEs(buildSpanishActiveLine("S","A", pI,   v, comp), "ayer")),
+          5: ensurePeriodEs(addTailEs(buildSpanishActiveLine("P","N", pShe, v, comp), "todos los días")),
+          6: addTailEs(buildSpanishActiveLine("P","Q", pThey, v, comp), ""), // sin cola
+          7: ensurePeriodEs(addTailEs(buildSpanishActiveLine("PP","A", pWe, v, comp), "ya")),
+          8: ensurePeriodEs(addTailEs(buildSpanishActiveLine("PP","N", pHe, v, comp), "")),
+          9: addTailEs(buildSpanishActiveLine("S","Q", pYou, v, comp), "anoche")
+        };
+      })()
     };
   } else {
     // PASIVA
@@ -3558,8 +4196,27 @@ function renderReading(v){
   const comp = getComplement(v);
   const subjPas = subjForPassive(v);
 
+  const addTailEs = (line, tail)=>{
+    line = String(line||"").replace(/\s+/g," ").trim();
+    tail = String(tail||"").trim();
+    if(!tail) return line;
+    if(line.endsWith("?")){
+      const base = line.slice(0,-1).trim();
+      tail = tail.replace(/[?]+$/,"").trim();
+      return (base + " " + tail + "?").replace(/\s+/g," ").trim();
+    }
+    return (line + " " + tail).replace(/\s+/g," ").trim();
+  };
+  const ensurePeriodEs = (line)=>{
+    line = String(line||"").trim();
+    if(!line) return line;
+    if(/[\.!?]$/.test(line)) return line;
+    return line + ".";
+  };
+
   let en = [];
   let es = [];
+  let meta = [];
 
   if(voiceMode==="passive" && passiveOk){
     const sEN = subjPas.en;
@@ -3580,7 +4237,7 @@ function renderReading(v){
       `${capFirst(beS)} ${sEN.toLowerCase()} ${v.c3} ${byMe} yesterday?`,
 
       `${sEN} ${have} been ${v.c3} ${byMe} this week.`,
-      `${sEN} ${(have==="has"?"hasn't":"haven't")} been ${v.c3} ${byMe} this week.`,
+      `${sEN} ${have} not been ${v.c3} ${byMe} this week.`,
       `${capFirst(have)} ${sEN.toLowerCase()} been ${v.c3} ${byMe} this week?`
     ];
 
@@ -3597,6 +4254,19 @@ function renderReading(v){
       `No se ${objVerbEs("pp")} ${subjPas.es} esta semana.`,
       `¿Se ${objVerbEs("pp")} ${subjPas.es} esta semana?`
     ].map(x=>x.replace(/\s+/g," ").trim());
+
+    // meta (tKind/mood) para colorear C3 en pasiva
+    meta = [
+      {t:"P", m:"A", p:PRON[0]},
+      {t:"P", m:"N", p:PRON[0]},
+      {t:"P", m:"Q", p:PRON[0]},
+      {t:"S", m:"A", p:PRON[0]},
+      {t:"S", m:"N", p:PRON[0]},
+      {t:"S", m:"Q", p:PRON[0]},
+      {t:"PP", m:"A", p:PRON[0]},
+      {t:"PP", m:"N", p:PRON[0]},
+      {t:"PP", m:"Q", p:PRON[0]}
+    ];
 
   } else {
     // Activa (o pasiva no aplicable)
@@ -3617,6 +4287,7 @@ function renderReading(v){
       makePPQ(pYou,v).replace(/\?$/," this week?")
     ];
 
+    // ✅ Round 2: insertar complemento manteniendo el tiempo (today/yesterday/this week)
     en = (currentRound===2)
       ? enRaw.map(line => {
           const m = line.match(/\s(today|yesterday|this week)\.?$/i);
@@ -3633,20 +4304,36 @@ function renderReading(v){
         })
       : enRaw;
 
+    // ✅ Español con conjugación real (misma lógica que Tablas)
     es = [
-      (currentRound===2) ? `Yo ${v.esp.toLowerCase()} ${comp.es} hoy.` : `Yo ${v.esp.toLowerCase()} hoy.`,
-      (currentRound===2) ? `Yo no ${v.esp.toLowerCase()} ${comp.es} hoy.` : `Yo no ${v.esp.toLowerCase()} hoy.`,
-      (currentRound===2) ? `¿Tú ${v.esp.toLowerCase()} ${comp.es} hoy?` : `¿Tú ${v.esp.toLowerCase()} hoy?`,
+      ensurePeriodEs(addTailEs(buildSpanishActiveLine("P","A", pI, v, comp), "hoy")),
+      ensurePeriodEs(addTailEs(buildSpanishActiveLine("P","N", pI, v, comp), "hoy")),
+      addTailEs(buildSpanishActiveLine("P","Q", pYou, v, comp), "hoy"),
 
-      (currentRound===2) ? `Yo ${v.esp.toLowerCase()} ${comp.es} ayer.` : `Yo ${v.esp.toLowerCase()} ayer.`,
-      (currentRound===2) ? `Yo no ${v.esp.toLowerCase()} ${comp.es} ayer.` : `Yo no ${v.esp.toLowerCase()} ayer.`,
-      (currentRound===2) ? `¿Tú ${v.esp.toLowerCase()} ${comp.es} ayer?` : `¿Tú ${v.esp.toLowerCase()} ayer?`,
+      ensurePeriodEs(addTailEs(buildSpanishActiveLine("S","A", pI, v, comp), "ayer")),
+      ensurePeriodEs(addTailEs(buildSpanishActiveLine("S","N", pI, v, comp), "ayer")),
+      addTailEs(buildSpanishActiveLine("S","Q", pYou, v, comp), "ayer"),
 
-      (currentRound===2) ? `Yo he ${v.esp.toLowerCase()} ${comp.es} esta semana.` : `Yo he ${v.esp.toLowerCase()} esta semana.`,
-      (currentRound===2) ? `Yo no he ${v.esp.toLowerCase()} ${comp.es} esta semana.` : `Yo no he ${v.esp.toLowerCase()} esta semana.`,
-      (currentRound===2) ? `¿Tú has ${v.esp.toLowerCase()} ${comp.es} esta semana?` : `¿Tú has ${v.esp.toLowerCase()} esta semana?`
+      ensurePeriodEs(addTailEs(buildSpanishActiveLine("PP","A", pI, v, comp), "esta semana")),
+      ensurePeriodEs(addTailEs(buildSpanishActiveLine("PP","N", pI, v, comp), "esta semana")),
+      addTailEs(buildSpanishActiveLine("PP","Q", pYou, v, comp), "esta semana")
     ].map(x=>x.replace(/\s+/g," ").trim());
+
+    meta = [
+      {t:"P", m:"A", p:pI},
+      {t:"P", m:"N", p:pI},
+      {t:"P", m:"Q", p:pYou},
+      {t:"S", m:"A", p:pI},
+      {t:"S", m:"N", p:pI},
+      {t:"S", m:"Q", p:pYou},
+      {t:"PP", m:"A", p:pI},
+      {t:"PP", m:"N", p:pI},
+      {t:"PP", m:"Q", p:pYou}
+    ];
   }
+
+  const modeUsed = (voiceMode==="passive" && passiveOk) ? "passive" : "active";
+  const enHTML = en.map((line,i)=> colorizeConjugation(line, meta[i].t, meta[i].m, meta[i].p, v, modeUsed));
 
   const badgeText = (voiceMode==="passive" && passiveOk) ? "PASIVA" : "ACTIVA";
 
@@ -3662,37 +4349,24 @@ function renderReading(v){
 
     ${warnPassive}
 
-    <div class="grid">
+    <div class="grid" style="grid-template-columns: 1fr;">
       <div class="card">
         <strong>🇺🇸 English (Primero)</strong>
         <table>
-          ${en.map(line=>`
+          ${en.map((line,i)=>`
             <tr>
               <td>
                 <button class="btn-listen" type="button" data-say="${encodeURIComponent(line)}">🔊</button>
-                <span class="en">${line}</span>
+                <span class="en">${enHTML[i]}</span>
+                <span class="es">${es[i]}</span>
               </td>
             </tr>
           `).join("")}
-        </table>
+        </tbody></table>
         <div class="legend">${
           (voiceMode==="passive" && passiveOk)
-            ? `Voz pasiva con sujeto-objeto: <b>${subjForPassive(v).en}</b>.`
-            : `Incluye Presente, Pasado y Presente Perfecto (A/N/Q).`
-        }</div>
-      </div>
-
-      <div class="card">
-        <strong>🇨🇴 Español (Luego)</strong>
-        <table>
-          ${es.map(line=>`
-            <tr><td><span class="en">${line}</span></td></tr>
-          `).join("")}
-        </table>
-        <div class="legend">${
-          (voiceMode==="passive" && passiveOk)
-            ? `Equivalencia recomendada en español: construcción con <b>“se”</b> (correcta y natural).`
-            : `Traducción y guía para comparar estructuras.`
+            ? `Voz pasiva con sujeto-objeto: <b>${subjForPassive(v).en}</b>.<br/>Equivalencia recomendada en español: construcción con <b>“se”</b> (correcta y natural).`
+            : `Incluye Presente, Pasado y Presente Perfecto (A/N/Q).<br/>Traducción debajo de cada oración (EN → ES).`
         }</div>
       </div>
     </div>
@@ -3700,6 +4374,14 @@ function renderReading(v){
 
   document.getElementById("readingArea").innerHTML = html;
   bindListenButtons();
+  const rn = document.getElementById("readingNav");
+  if(rn) rn.style.display = "flex";
+  const rnf = document.getElementById("readingNavFooter");
+  if(rnf) rnf.style.display = "flex";
+  const p2 = document.getElementById("progreso2");
+  if(p2) p2.innerText = `${idx+1} de ${current.length}`;
+  const p2f = document.getElementById("progreso2Footer");
+  if(p2f) p2f.innerText = `${idx+1} de ${current.length}`;
 }
 
 /* ===========================
